@@ -1,17 +1,21 @@
 import React from 'react'
-import GoogleLogin from 'react-google-login';
+
 import { useNavigate } from 'react-router-dom';
 import {FcGoogle} from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logo.png';
 
 
+
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+
+import { client } from '../client';
+
+
 const Login = () => {
 
-const responseGoogle = (response) =>{
-
-}
-
+const navigate = useNavigate();
   return (
     <div className='flex justify-start items-center flex-col h-screen'>
         <div className='relative w-full h-full'>
@@ -29,27 +33,38 @@ const responseGoogle = (response) =>{
                 <img src={logo} alt="logo" width="130px"/>
             </div>
             <div className='shadow-2xl'>
-                <GoogleLogin
-                 //   clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
-                    
-                    render={(renderProps)=>(
-                        <button
-                            type='button'
-                            className='bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none'
-                        
-                        onClick={renderProps.onClick}
-                        disabled={renderProps.disabled}
-                        >
-                            <FcGoogle className='mr-4'/>
-                        Sign in with Google
-                        </button>
-                    )}
+            <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+    var decoded = jwt_decode(credentialResponse.credential);
+    console.log(decoded);
+    
+    console.log('basic info:')
+    console.log(decoded.email);
+    console.log(decoded.name);
+    console.log(decoded.picture);
 
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
-                    cookiePolicy='single_host_origin'
-                
-                />
+
+    localStorage.setItem('user', decoded);
+        
+
+        const doc = {
+            _id: decoded.sub,
+            _type: 'user',
+            userName: decoded.name,
+            image: decoded.picture
+        }
+
+        client.createIfNotExists(doc)
+        .then(()=>{
+            navigate('/', {replace: true})
+        })
+    
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>;
             </div>
 
                 </div>

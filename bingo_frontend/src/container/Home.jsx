@@ -23,7 +23,7 @@ const userInfo = localStorage.getItem('user') !== 'undifiend'? JSON.parse(localS
 const userIdCustom= userInfo.sub;
 useEffect(()=>{
   const query = userQuery(userIdCustom);
-console.log(query);
+//console.log(query);
 
   client.fetch(query)
   .then((data)=>{
@@ -51,7 +51,7 @@ useEffect(() => {
         </Link>
 
         <Link to={`user-profile/${user?._id}`}>
-          <img src={user?.image} alt='logo' className='w-28' />
+          <img src={user?.image} alt='logo' className='w-10' />
         </Link>
       </div>
       {toggleSidebar && (

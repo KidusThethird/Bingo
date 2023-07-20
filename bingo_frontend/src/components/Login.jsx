@@ -45,7 +45,9 @@ const navigate = useNavigate();
     console.log(decoded.picture);
 
 
-    localStorage.setItem('user', decoded);
+    localStorage.setItem('user', JSON.stringify(decoded));
+    console.log('this to print');
+    console.log(decoded.sub)
         
 
         const doc = {

@@ -45,6 +45,7 @@ const UserProfile = () => {
   }, [text, userId]);
 
   const logout = () => {
+    console.log('direct to log in ')
     localStorage.clear();
 
     navigate('/login');
@@ -72,20 +73,27 @@ const UserProfile = () => {
             {user.userName}
           </h1>
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId === User.googleId && (
+          {console.log(userId)}
+            {userId === User.sub && (
+             
               <GoogleLogout
-                clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
+            //  clientId="7852846463-o0489pfhp7qpf4e8fl9r152libtml2ue.apps.googleusercontent.com"
                 render={(renderProps) => (
                   <button
                     type="button"
                     className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
-                    onClick={renderProps.onClick}
-                    disabled={renderProps.disabled}
+                    onClick={()=>logout()}
+                    //disabled={renderProps.disabled}
                   >
                     <AiOutlineLogout color="red" fontSize={21} />
                   </button>
                 )}
-                onLogoutSuccess={logout}
+                onLogoutSuccess={
+                  console.log('working')
+                  
+                }
+                
+                
                 cookiePolicy="single_host_origin"
               />
             )}
